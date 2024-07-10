@@ -1,0 +1,27 @@
+platform :ios, '13.0'
+
+workspace 'UniversalFramework.xcworkspace'
+
+use_frameworks!
+
+def app_pods
+  pod 'Alamofire', '5.4.4'
+end
+
+target 'ApiFramework' do
+    project './ApiFramework/ApiFramework.xcodeproj'
+    app_pods
+end
+
+target 'UniversalFrameworkApp' do
+    project './UniversalFrameworkApp/UniversalFrameworkApp.xcodeproj'
+    app_pods
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings.delete 'IPHONEOS_DEPLOYMENT_TARGET'
+    end
+  end
+end
